@@ -1,0 +1,10 @@
+;do $System.OBJ.LoadDir("/opt/irisapp/src","ck",,1)
+
+zn "%SYS"
+Do ##class(Security.Users).UnExpireUserPasswords("*")
+;zpm "install zpm"
+;zpm "load https://github.com/intersystems/ipm.git"
+;zpm "load https://github.com/SergeyMi37/zapm.git"
+;zn "USER"
+zpm "load /opt/irisapp/ -v":1:1
+halt
