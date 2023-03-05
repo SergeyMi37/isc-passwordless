@@ -1,0 +1,69 @@
+ROUTINE ZAUTHENTICATE
+ZAUTHENTICATE(ServiceName,Namespace,Username,Password,Credentials,Properties) PUBLIC {
+#include %occErrors
+#include %sySecurity
+ set $ZT="Error"
+ quit $SYSTEM.Status.OK()
+Error //Handle any COS errors here
+  //Reset error trap to avoid infinite loop
+  set $zt=""
+  //Return the generalized COS error message #5002
+  quit $SYSTEM.Status.Error(5002 /*$$$CacheError*/,$ze)
+ }
+ 
+ // Appplay Password,Delegated
+ // do Apply^ZAUTHENTICATE()
+Apply(app = "") Public {
+ 	new $namespace
+ 	set $namespace="%SYS"
+
+	set:app="" app= $System.Util.GetEnviron("ISC_app")
+	set:app="" app="/csp/sys/"
+
+	;set par("AutheEnabled")=32    ; Password
+	;set par("AutheEnabled")=8256  ; Unauthenticated + Delegated
+	;set par("AutheEnabled")=8192  ; Delegated
+	;set par("AutheEnabled")=64 ; Unauthenticated
+	set par("AutheEnabled")=8224 ; Password, Delegated
+	set tSC=##class(Security.Applications).Modify(app,.par)
+	if 'tSC quit tSC
+
+	;set role="%All"
+	;set tSC=##class(Security.Users).AddRoles("UnknownUser",.role,1)    
+
+	quit tSC
+}
+
+GetCredentials(ServiceName,Namespace,Username,Password,Credentials) Public {
+  // For console sessions, authenticate as _SYSTEM.
+  set ^tmp($i(^tmp),"=0")=$lb(ServiceName,Namespace,Username,Password,Credentials)
+  set Username = $System.Util.GetEnviron("ISC_Username")
+  Set Password = $System.Util.GetEnviron("ISC_Password")
+  set ^tmp($i(^tmp),"=1")=$lb(App,Username,Password)
+  If ServiceName="%Service_Console" {
+    Set:Username="" Username ="_SYSTEM"
+    Set:Password="" Password="SYS"
+    Quit $SYSTEM.Status.OK()
+  }
+
+  // For a web application, authenticate as AdminUser.
+  If $isobject($get(%request)) { 
+	Set App = $System.Util.GetEnviron("ISC_App")
+	Set:App="" App = "/csp/sys/"
+	set ^tmp($i(^tmp),"=2")=$lb(App,Username,Password,%request.Application)
+    If %request.Application=App {
+	    Set:Username="" Username ="_SYSTEM"
+	    Set:Password="" Password="SYS"
+	    set ^tmp($i(^tmp),"=3")=$lb(App,Username,Password,%request.Application)
+      Quit $System.Status.OK()
+    }
+  }
+  // For bindings connections, use regular prompting.
+  If ServiceName="%Service_Bindings" {
+    Quit $SYSTEM.Status.Error($$$GetCredentialsFailed)
+  }
+
+  // For all other connections, deny access.
+  Quit $SYSTEM.Status.Error($$$AccessDenied)
+ }
+

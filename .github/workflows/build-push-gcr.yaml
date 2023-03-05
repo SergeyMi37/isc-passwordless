@@ -11,6 +11,6 @@ jobs:
   deploy:
     uses: intersystems-community/demo-deployment/.github/workflows/deployment.yml@master
     with:
-      name: zapm
+      name: passwordless
     secrets:
       SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
