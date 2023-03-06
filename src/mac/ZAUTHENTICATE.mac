@@ -11,29 +11,6 @@ Error //Handle any COS errors here
   quit $SYSTEM.Status.Error(5002 /*$$$CacheError*/,$ze)
  }
  
- // Appplay Password,Delegated
- // do Apply^ZAUTHENTICATE()
-Apply(app = "") Public {
- 	new $namespace
- 	set $namespace="%SYS"
-
-	set:app="" app= $System.Util.GetEnviron("ISC_app")
-	set:app="" app="/csp/sys/"
-
-	;set par("AutheEnabled")=32    ; Password
-	;set par("AutheEnabled")=8256  ; Unauthenticated + Delegated
-	;set par("AutheEnabled")=8192  ; Delegated
-	;set par("AutheEnabled")=64 ; Unauthenticated
-	set par("AutheEnabled")=8224 ; Password, Delegated
-	set tSC=##class(Security.Applications).Modify(app,.par)
-	if 'tSC quit tSC
-
-	;set role="%All"
-	;set tSC=##class(Security.Users).AddRoles("UnknownUser",.role,1)    
-
-	quit tSC
-}
-
 GetCredentials(ServiceName,Namespace,Username,Password,Credentials) Public {
   // For console sessions, authenticate as _SYSTEM.
   set ^tmp($i(^tmp),"=0")=$lb(ServiceName,Namespace,Username,Password,Credentials)
@@ -52,7 +29,7 @@ GetCredentials(ServiceName,Namespace,Username,Password,Credentials) Public {
 	Set:App="" App = "/csp/sys/"
 	set ^tmp($i(^tmp),"=2")=$lb(App,Username,Password,%request.Application)
     If %request.Application=App {
-	    Set:Username="" Username ="_SYSTEM"
+	    Set:Username="" Username ="Superuser"
 	    Set:Password="" Password="SYS"
 	    set ^tmp($i(^tmp),"=3")=$lb(App,Username,Password,%request.Application)
       Quit $System.Status.OK()
