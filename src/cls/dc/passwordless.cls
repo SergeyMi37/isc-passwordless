@@ -2,11 +2,12 @@
 Class dc.passwordless
 {
 
-/// write ##class(dc.passwordless).Apply()
+/// write ##class(dc.passwordless).Apply("/csp/sys")
 ClassMethod Apply(app = "") {
- 	new $namespace
+	quit:app="" $$$OK
+	new $namespace
  	set $namespace="%SYS"
-	
+
 	set:app="" app= $System.Util.GetEnviron("ISC_app")
 	set:app="" app="/csp/sys"
 	
