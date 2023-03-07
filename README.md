@@ -1,5 +1,5 @@
 
-[![OEX-zapm](https://img.shields.io/badge/dynamic/json?url=https:%2F%2Fpm.community.intersystems.com%2Fpackages%2Fisc-passwordless%2F&label=ZPM-pm.community.intersystems.com&query=$.version&color=green&prefix=passwordless)](https://pm.community.intersystems.com/packages/passwordless)
+[![OEX-zapm](https://img.shields.io/badge/dynamic/json?url=https:%2F%2Fpm.community.intersystems.com%2Fpackages%2Fpasswordless%2F&label=ZPM-pm.community.intersystems.com&query=$.version&color=green&prefix=passwordless)](https://pm.community.intersystems.com/packages/passwordless)
 
 [![Docker-ports](https://img.shields.io/badge/dynamic/yaml?color=blue&label=docker-compose&prefix=ports%20-%20&query=%24.services.iris.ports&url=https%3A%2F%2Fraw.githubusercontent.com%2Fsergeymi37%2Fisc-passwordless%2Fmaster%2Fdocker-compose.yml)](https://raw.githubusercontent.com/sergeymi37/isc-passwordless/master/docker-compose.yml)
 
