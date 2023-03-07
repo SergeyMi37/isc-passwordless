@@ -1,7 +1,8 @@
 
 ## passwordless
 
-Passwordless mode for Dev Mode IRIS
+Passwordless mode for IRIS developer mode through delegation discussed in the [article](https://github.com/SergeyMi37/isc-passwordless).
+By default, passwordless mode is enabled for application `/csp/sys` with `superuser` account. For customization, you can use environment variables. To do this, you need to copy file `.env_example` to file `.env` and edit the account and password.
 
 ## Installation with ZPM
 
@@ -46,3 +47,8 @@ Run the IRIS container with your project:
 ```
 $ docker-compose up -d
 ```
+By default, the installation will run
+```
+do ##class(dc.passwordless).Apply("/csp/sys")
+```
+If you need to make a passwordless login to another application, then you need to specify it in the parameter.
