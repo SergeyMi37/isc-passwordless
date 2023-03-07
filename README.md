@@ -1,7 +1,13 @@
 
-[![Quality Gate Status](https://community.objectscriptquality.com/api/project_badges/measure?project=intersystems_iris_community%2Fzapm&metric=alert_status)](https://community.objectscriptquality.com/dashboard?id=intersystems_iris_community%2Fisc-passwordless)
+[![OEX-zapm](https://img.shields.io/badge/dynamic/json?url=https:%2F%2Fpm.community.intersystems.com%2Fpackages%2Fisc-passwordless%2F&label=ZPM-pm.community.intersystems.com&query=$.version&color=green&prefix=passwordless)](https://pm.community.intersystems.com/packages/passwordless)
+
+[![Docker-ports](https://img.shields.io/badge/dynamic/yaml?color=blue&label=docker-compose&prefix=ports%20-%20&query=%24.services.iris.ports&url=https%3A%2F%2Fraw.githubusercontent.com%2Fsergeymi37%2Fisc-passwordless%2Fmaster%2Fdocker-compose.yml)](https://raw.githubusercontent.com/sergeymi37/isc-passwordless/master/docker-compose.yml)
+
+![](https://github.com/SergeyMi37/isc-passwordless/blob/master/doc/passless.png)
 
 ## passwordless
+
+[![Quality Gate Status](https://community.objectscriptquality.com/api/project_badges/measure?project=intersystems_iris_community%2Fzapm&metric=alert_status)](https://community.objectscriptquality.com/dashboard?id=intersystems_iris_community%2Fisc-passwordless)
 
 Passwordless mode for IRIS developer mode through delegation discussed in the [article](https://github.com/SergeyMi37/isc-passwordless).
 By default, passwordless mode is enabled for application `/csp/sys` with `superuser` account. For customization, you can use environment variables. To do this, you need to copy file `.env_example` to file `.env` and edit the account and password.
