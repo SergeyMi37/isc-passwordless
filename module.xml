@@ -16,7 +16,6 @@
   <Resource Name="ZAUTHENTICATE.MAC" Directory="mac"/>
   <Resource Name="dc.passwordless.CLS" Directory="cls"/>
   <Invokes>
-  <!--<Invoke Routine="ZAUTHENTICATE.MAC" Method="Apply"></Invoke>-->
   <Invoke Class="dc.passwordless" Method="Apply"></Invoke>
   </Invokes>
 </Module>
