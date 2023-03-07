@@ -1,4 +1,6 @@
 
+[![Quality Gate Status](https://community.objectscriptquality.com/api/project_badges/measure?project=intersystems_iris_community%2Fzapm&metric=alert_status)](https://community.objectscriptquality.com/dashboard?id=intersystems_iris_community%2Fisc-passwordless)
+
 ## passwordless
 
 Passwordless mode for IRIS developer mode through delegation discussed in the [article](https://github.com/SergeyMi37/isc-passwordless).
@@ -47,8 +49,12 @@ Run the IRIS container with your project:
 ```
 $ docker-compose up -d
 ```
-# By default, the installation will run
+## By default, the installation will run
 ```
 do ##class(dc.passwordless).Apply("/csp/sys")
 ```
 If you need to make a passwordless login to another application, then you need to specify it in the parameter.
+
+## Tested
+
+[![Online Demo](https://img.shields.io/badge/Demo%20on-GCR-black)](https://zapm.demo.community.intersystems.com/csp/sys/UtilHome.csp)
