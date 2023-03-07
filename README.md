@@ -47,7 +47,7 @@ Run the IRIS container with your project:
 ```
 $ docker-compose up -d
 ```
-By default, the installation will run
+# By default, the installation will run
 ```
 do ##class(dc.passwordless).Apply("/csp/sys")
 ```
