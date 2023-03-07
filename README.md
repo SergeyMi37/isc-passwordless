@@ -57,4 +57,4 @@ If you need to make a passwordless login to another application, then you need t
 
 ## Tested
 
-[![Online Demo](https://img.shields.io/badge/Demo%20on-GCR-black)](https://zapm.demo.community.intersystems.com/csp/sys/UtilHome.csp)
+[![Online Demo](https://img.shields.io/badge/Demo%20on-GCR-black)](https://passwordless.demo.community.intersystems.com/csp/sys/UtilHome.csp)
