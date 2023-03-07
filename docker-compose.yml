@@ -13,3 +13,5 @@ services:
     volumes:
     #  - ~/iris.key:/usr/irissys/mgr/iris.key
       - ./:/irisdev/app
+    env_file:
+          - ./.env

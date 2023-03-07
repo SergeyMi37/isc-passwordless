@@ -13,10 +13,9 @@ Error //Handle any COS errors here
  
 GetCredentials(ServiceName,Namespace,Username,Password,Credentials) Public {
   // For console sessions, authenticate as _SYSTEM.
-  set ^tmp($i(^tmp),"=0")=$lb(ServiceName,Namespace,Username,Password,Credentials)
   set Username = $System.Util.GetEnviron("ISC_Username")
   Set Password = $System.Util.GetEnviron("ISC_Password")
-  set ^tmp($i(^tmp),"=1")=$lb(App,Username,Password)
+
   If ServiceName="%Service_Console" {
     Set:Username="" Username ="_SYSTEM"
     Set:Password="" Password="SYS"
@@ -27,11 +26,9 @@ GetCredentials(ServiceName,Namespace,Username,Password,Credentials) Public {
   If $isobject($get(%request)) { 
 	Set App = $System.Util.GetEnviron("ISC_App")
 	Set:App="" App = "/csp/sys/"
-	set ^tmp($i(^tmp),"=2")=$lb(App,Username,Password,%request.Application)
     If %request.Application=App {
 	    Set:Username="" Username ="Superuser"
 	    Set:Password="" Password="SYS"
-	    set ^tmp($i(^tmp),"=3")=$lb(App,Username,Password,%request.Application)
       Quit $System.Status.OK()
     }
   }
