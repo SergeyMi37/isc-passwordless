@@ -3,7 +3,7 @@
 <Document name="passwordless.ZPM">
 <Module>
  <Name>passwordless</Name>
-  <Version>1.0.0</Version>
+  <Version>1.0.1</Version>
   <Description>Passwordless mode for Dev Mode IRIS</Description>
   <Keywords>Passwordless mode for Dev Mode IRIS</Keywords>
   <Author>
@@ -17,6 +17,9 @@
   <Resource Name="dc.passwordless.CLS" Directory="cls"/>
   <Invokes>
   <Invoke Class="dc.passwordless" Method="Apply"></Invoke>
+   <Arg>*</Arg>
+   <Arg>SuperUser</Arg>
+   <Arg>SYS</Arg>
   </Invokes>
 </Module>
 </Document>

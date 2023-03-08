@@ -2,11 +2,32 @@
 Class dc.passwordless
 {
 
+Parameter GN = "^%ZAPM.AppsDelegate";
+
 /// write ##class(dc.passwordless).Apply("/csp/sys")
-ClassMethod Apply(app = "/csp/sys")
+ClassMethod Apply(app = "/csp/sys", user = "", pass = "", mode = "0")
 {
 	quit:app="" $$$OK
 	new $namespace
+	if $namespace'="%SYS" {
+		write !,""
+		if $$EXIST^%R("ZAUTHENTICATE.mac","%SYS") {
+			set msg="Routine ZAUTHENTICATE.mac in %SYS already installed"
+			write !,msg
+			if mode=1 quit $$$OK
+			if mode=2 quit $$$ERROR($$$GeneralError,msg)
+		}
+		set tempFile = ##class(%File).TempFilename("xml")
+		set list("ZAUTHENTICATE.MAC")=""
+		set list("dc.passwordless.CLS")=""
+		set st=$SYSTEM.OBJ.Export(.list, tempFile)
+		set $namespace="%SYS"
+		set st = $SYSTEM.OBJ.Load(tempFile, "c")
+		if 'st {
+			set msg=$System.Status.GetErrorText(st) write !,msg 
+			quit $$$ERROR($$$GeneralError,msg)
+		}
+	}
  	set $namespace="%SYS"
 
 	set:app="" app= $System.Util.GetEnviron("ISC_app")
@@ -17,21 +38,60 @@ ClassMethod Apply(app = "/csp/sys")
 	If '$ZBoolean(ss.AutheEnabled, $$$AutheDelegated, 1) {
 		Set ss.AutheEnabled = ss.AutheEnabled + $$$AutheDelegated
 	}
-	set tSC=ss.%Save()
+	set st=ss.%Save()
+	if 'st quit st
 	
-	set tSC=##class(Security.Applications).Get(app,.par)
-	// Remove unauthenticated and add delegated
-	If $ZBoolean(par("AutheEnabled"), $$$AutheUnauthenticated, 1) {
-		Set par("AutheEnabled") = par("AutheEnabled") - $$$AutheUnauthenticated
+	if app="*" {
+		set result=##CLASS(%ResultSet).%New("%DynamicQuery:SQL")
+		set tSC=result.Prepare("select Name FROM Security.Applications")
+		set:tSC tSC=result.Execute()
+		if '$$$ISOK(tSC) {
+			set text="Application setup error :"_$SYSTEM.Status.GetErrorText(tSC)  
+			write !,text 
+			QUIT $$$ERROR(text)
+		}
+		else {
+			while result.Next() {
+				set CSP=result.Data("Name")
+				set csp=$zconvert(CSP,"L")
+				set st=..AddDelegate(csp,user,pass)
+			}
+		write !,"OK"
+		}	
 	}
-	If '$ZBoolean(par("AutheEnabled"), $$$AutheDelegated, 1) {
-		Set par("AutheEnabled") = par("AutheEnabled") + $$$AutheDelegated
+	elseif app["," {
+		set a=""
+		for i=1:1:$l(app,",") { set a=$p(app,",",i)
+			continue:a=""
+			set st=..AddDelegate(a,$p(user,",",i),$p(pass,",",i))
+		}
 	}
-	
-	set tSC=##class(Security.Applications).Modify(app,.par)
-	if 'tSC quit tSC
-	
-	quit tSC
+	else {
+		set st=..AddDelegate(app,user,pass)
+	}
+	quit $$$OK
+}
+
+ClassMethod AddDelegate(app, user = "", pass = "")
+{
+	set st=##class(Security.Applications).Get(app,.par)
+	if st {
+		// Remove unauthenticated and add delegated
+		If $ZBoolean(par("AutheEnabled"), $$$AutheUnauthenticated, 1) {
+			Set par("AutheEnabled") = par("AutheEnabled") - $$$AutheUnauthenticated
+		}
+		If '$ZBoolean(par("AutheEnabled"), $$$AutheDelegated, 1) {
+			Set par("AutheEnabled") = par("AutheEnabled") + $$$AutheDelegated
+		}
+		set st=##class(Security.Applications).Modify(app,.par)
+		if st {
+			set acc=""
+			if user'="" set acc=$lb(user,pass)
+			if $e(app,*)'="/" set app=app_"/"
+			set @..#GN@(app)=acc
+		}
+	}
+	Quit st
 }
 
 }

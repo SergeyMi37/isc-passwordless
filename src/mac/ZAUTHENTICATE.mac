@@ -25,10 +25,20 @@ GetCredentials(ServiceName,Namespace,Username,Password,Credentials) Public {
   // For a web application, authenticate as AdminUser.
   If $isobject($get(%request)) { 
 	Set App = $System.Util.GetEnviron("ISC_App")
-	Set:App="" App = "/csp/sys/"
-    If %request.Application=App {
+	Set:App="" App = "/csp/sys"
+	set GN = "^%ZAPM.AppsDelegate"
+	if $e(App,*)'="/" set App=App_"/"
+	;s ^tmp($i(^tmp),"=1")=$lb(App,Username,Password,%request.Application)
+    If %request.Application=App || ($Data(@GN@(App))) {
+	    ;s ^tmp($i(^tmp),"=11")=$lb(App,Username,Password)
+	    if $Data(@GN@(App),data),$G(data)'="" {
+		    set Username = $lg(data,1),
+		    	Password = $lg(data,2)
+		    ;s ^tmp($i(^tmp),"=2")=$lb(App,Username,Password,data)
+	    }
 	    Set:Username="" Username ="Superuser"
 	    Set:Password="" Password="SYS"
+	    ;s ^tmp($i(^tmp),"=3")=$lb(App,Username,Password)
       Quit $System.Status.OK()
     }
   }
