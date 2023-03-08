@@ -3,7 +3,7 @@
 <Document name="passwordless.ZPM">
 <Module>
  <Name>passwordless</Name>
-  <Version>1.0.2</Version>
+  <Version>1.0.3</Version>
   <Description>Passwordless mode for Dev Mode IRIS</Description>
   <Keywords>Passwordless mode for Dev Mode IRIS</Keywords>
   <Author>
