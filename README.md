@@ -7,10 +7,11 @@
 
 ## passwordless
 
+[![Online Demo](https://img.shields.io/badge/Demo%20on-GCR-black)](https://passwordless.demo.community.intersystems.com/csp/sys/UtilHome.csp)
 [![Quality Gate Status](https://community.objectscriptquality.com/api/project_badges/measure?project=intersystems_iris_community%2Fzapm&metric=alert_status)](https://community.objectscriptquality.com/dashboard?id=intersystems_iris_community%2Fisc-passwordless)
 
 Passwordless mode for IRIS developer mode through delegation discussed in the [article](https://github.com/SergeyMi37/isc-passwordless).
-By default, passwordless mode is enabled for application `/csp/sys` with `superuser` account. For customization, you can use environment variables. To do this, you need to copy file `.env_example` to file `.env` and edit the account and password.
+By default, passwordless mode is enabled for all applications with the `superuser` account. For customization, you can use environment variables. To do this, you need to copy file `.env_example` to file `.env` and edit the account and password.
 
 ## Installation with ZPM
 
@@ -55,12 +56,12 @@ Run the IRIS container with your project:
 ```
 $ docker-compose up -d
 ```
-## By default, the installation will run
-```
-do ##class(dc.passwordless).Apply("/csp/sys")
-```
 If you need to make a passwordless login to another application, then you need to specify it in the parameter.
 
-## Tested
+## How to Test it
+Open IRIS terminal:
+```
+do ##class(dc.passwordless).Apply("/csp/sys","_system","SYS")
+```
 
-[![Online Demo](https://img.shields.io/badge/Demo%20on-GCR-black)](https://passwordless.demo.community.intersystems.com/csp/sys/UtilHome.csp)
+
