@@ -76,6 +76,7 @@ ClassMethod AddDelegate(app, user = "", pass = "")
 {
 	set st=##class(Security.Applications).Get(app,.par)
 	if st {
+		if par("AutheEnabled")=$$$AutheUnauthenticated quit $$$OK
 		// Remove unauthenticated and add delegated
 		If $ZBoolean(par("AutheEnabled"), $$$AutheUnauthenticated, 1) {
 			Set par("AutheEnabled") = par("AutheEnabled") - $$$AutheUnauthenticated
