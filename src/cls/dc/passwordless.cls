@@ -72,11 +72,52 @@ ClassMethod Apply(app = "/csp/sys", user = "", pass = "", mode = "0")
 	quit $$$OK
 }
 
+/// write ##class(dc.passwordless).RestoreAutheApps("*")
+ClassMethod RestoreAutheApps(app = "")
+{
+	if app="*" {
+		set result=##CLASS(%ResultSet).%New("%DynamicQuery:SQL")
+		set tSC=result.Prepare("select Name FROM Security.Applications")
+		set:tSC tSC=result.Execute()
+		if '$$$ISOK(tSC) {
+			set text="Application setup error :"_$SYSTEM.Status.GetErrorText(tSC)  
+			write !,text 
+			QUIT $$$ERROR(text)
+		}
+		else {
+			while result.Next() {
+				set CSP=result.Data("Name")
+				set csp=$zconvert(CSP,"L")
+				set st=..RestoreApp(csp)
+			}
+		write !,"OK"
+		}	
+	}
+}
+
+ClassMethod RestoreApp(app)
+{
+	if '$d(@..#GN@("Authe",app)) write !,app," skip" quit $$$OK
+	set st=##class(Security.Applications).Get(app,.par)
+	if st {
+		kill par
+		merge par=@..#GN@("Authe",app)
+		set st=##class(Security.Applications).Modify(app,.par)
+		write !,app," restore"
+	}
+	Quit st
+}
+
 ClassMethod AddDelegate(app, user = "", pass = "")
 {
 	set st=##class(Security.Applications).Get(app,.par)
 	if st {
+		//Save for restore
+		if '$d(@..#GN@("Authe",app)) merge @..#GN@("Authe",app)=par
+		
+		//Skip Unauthenticated only
 		if par("AutheEnabled")=$$$AutheUnauthenticated quit $$$OK
+		
 		// Remove unauthenticated and add delegated
 		If $ZBoolean(par("AutheEnabled"), $$$AutheUnauthenticated, 1) {
 			Set par("AutheEnabled") = par("AutheEnabled") - $$$AutheUnauthenticated
@@ -84,6 +125,7 @@ ClassMethod AddDelegate(app, user = "", pass = "")
 		If '$ZBoolean(par("AutheEnabled"), $$$AutheDelegated, 1) {
 			Set par("AutheEnabled") = par("AutheEnabled") + $$$AutheDelegated
 		}
+		
 		set st=##class(Security.Applications).Modify(app,.par)
 		if st {
 			set acc=""
