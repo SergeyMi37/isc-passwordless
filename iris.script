@@ -1,6 +1,6 @@
 
 zn "%SYS"
 Do ##class(Security.Users).UnExpireUserPasswords("*")
-set ^flag=111
-zpm "load /opt/irisapp/ -v":1   set ^flag=222
+
+zpm "load /opt/irisapp/ -v":1
 halt
