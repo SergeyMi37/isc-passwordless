@@ -75,6 +75,8 @@ ClassMethod Apply(app = "/csp/sys", user = "", pass = "", mode = "0")
 /// write ##class(dc.passwordless).RestoreAutheApps("*")
 ClassMethod RestoreAutheApps(app = "")
 {
+ new $namespace
+ set $namespace="%SYS"
 	if app="*" {
 		set result=##CLASS(%ResultSet).%New("%DynamicQuery:SQL")
 		set tSC=result.Prepare("select Name FROM Security.Applications")
