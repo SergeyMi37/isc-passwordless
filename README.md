@@ -13,6 +13,13 @@
 Passwordless mode for IRIS developer mode through delegation discussed in the [article](https://github.com/SergeyMi37/isc-passwordless).
 By default, passwordless mode is enabled for all applications with the `superuser` account. For customization, you can use environment variables. To do this, you need to copy file `.env_example` to file `.env` and edit the account and password.
 
+## What's new
+
+Added a method to rollback the delegated authorization method for modified web applications
+```
+do ##class(dc.passwordless).RestoreAutheApps("*")
+```
+
 ## Installation with ZPM
 
 If the current ZPM instance is not installed, then in one line you can install the latest version of ZPM even with a proxy.
